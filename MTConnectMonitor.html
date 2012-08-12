@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MTConnect Monitor</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="MTConnect.js"></script>
+	<script src="MTConnectMonitor.js"></script>
+	<link rel="stylesheet" href="MTConnectMonitor.css"/>
+</head>
+<body>
+	<h1>MTConnect Monitor</h1>
+	
+	<p>
+		<label for="proxyInput">Enter the MTConnect proxy URL</label><br/>
+		<input id="proxyInput" type="text" size="30" value="http://localhost/MT/proxy.php?"/>
+	</p>
+	<p>
+		<label for="agentInput">Enter the MTConnect agent URL</label><br/>
+		<input id="agentInput" type="text" size="30" value="http://agent.mtconnect.org"/>
+	</p>
+	<button onclick="generateUI()">Load</button>
+	<button onclick="refreshUI()">Refresh</button>
+	
+	<p>Items update every 5 seconds. Click on individual components to expand/collapse. Monitor is a work-in-progress.</p>
+	
+	<div id="ui"></div>
+	
+	
+	<script>
+		var updateTimer = null;
+	
+		$(document).ready(function(){
+			generateUI();
+			refreshUI();
+			updateTimer = setInterval(refreshUI, 5000);
+		});
+		
+		$('#agentInput').change(function(){
+			if(updateTimer!==null){
+				clearInterval(updateTimer);
+			}
+			generateUI();
+			updateTimer = setInterval(refreshUI, 5000);
+		});
+	
+		function fetch(resource){
+			var proxy = $('#proxyInput').val();
+			var agent = $('#agentInput').val();
+		
+			var data = $.MTConnect(resource, {url: proxy+agent});
+			
+			return data;
+		}
+	
+		function generateUI(){
+			var data = fetch('probe');
+			$('#ui').MTConnectMonitor('init', data);
+			
+			$('[data-mtconnect-role="component"],[data-mtconnect-role="device"]').click(function(event){
+				$(this).children('ul').slideToggle();
+				event.stopPropagation();
+			});
+		}
+		
+		function refreshUI(){
+			var data = fetch('current');
+			if(data===null){
+				$('#ui').empty();
+			}
+			else{
+				$('#ui').MTConnectMonitor('refresh', data);
+			}
+		}
+	</script>
+</body>
+</html>

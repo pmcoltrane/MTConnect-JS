@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MTConnect Test</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="MTConnect.js"></script>
+	<script src="MTConnectMonitor.js"></script>
+	<link rel="stylesheet" href="MTConnectMonitor.css"/>
+</head>
+<body>
+	<h1>MTConnect Test</h1>
+	
+	<input id="proxyInput" type="hidden" value="http://localhost/MT/proxy.php?"/>
+	<input id="agentInput" type="text" size="30" value="http://agent.mtconnect.org"/>
+	
+	<button onclick="fetch('probe')">Probe</button>
+	<button onclick="fetch('current')">Current</button>
+	<button onclick="fetch('sample')">Sample</button>
+	<button onclick="fetch('asset')">Asset</button>
+	
+	<div id="test" style="overflow:scroll;padding:0.25em;height:25em;font-family:monospace;white-space:pre;"></div>
+	
+	<script>
+		function fetch(resource){
+			var proxy = $('#proxyInput').val();
+			var agent = $('#agentInput').val();
+		
+			var data = $.MTConnect(resource, {url: proxy+agent});
+			$('#test').text(data);
+			
+			return data;
+		}
+	</script>
+	
+</body>
+</html>

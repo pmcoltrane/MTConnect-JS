@@ -1,0 +1,51 @@
+body{
+	font-family:Calibri,Arial,Helvetica,sans-serif;
+}
+
+section[data-mtconnect-role="device"], [data-mtconnect-role="component"]{
+	border: solid black 1px;
+	border-radius: 12px;
+	padding:6px;
+	margin-top:6px;
+}
+
+section[data-mtconnect-role="device"] ul{
+	list-style:none;
+	padding-left:inherit;
+}
+
+[data-mtconnect-ui-name]{
+	font-weight:bold;
+}
+
+[data-mtconnect-ui-name]:after{
+	content:': ';
+}
+
+[data-mtconnect-ui-units]:before{
+	content:' ';
+}
+
+[data-mtconnect-ui-units]{
+	font-size:x-small;
+}
+
+[data-mtconnect-condition="NORMAL"]{
+	background:#cfc;
+	border-left:solid green 12px;
+}
+
+[data-mtconnect-condition="WARNING"]{
+	background:#ffc;
+	border-left:solid yellow 12px;
+}
+
+[data-mtconnect-condition="FAULT"]{
+	background:#fcc;
+	border-left:solid red 12px;
+}
+
+[data-mtconnect-condition="UNAVAILABLE"]{
+	background:#ccc;
+	border-left:solid gray 12px;
+}
