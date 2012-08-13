@@ -58,6 +58,22 @@
 		components: function(data){
 			return this.each(function(index, element){
 				$.each($(data).children('Components').children(), function(index, value){
+					var id = $(value).attr('id');
+					$(element).MTConnectMonitor('component', id, value);
+				});			
+			});
+		},
+		
+		/* Appends a Component container based on the given id and data.
+		 * id: The id of the Component.
+		 * data: An XML fragment containing the Component /probe definition.
+		 */
+		component: function(id, data){
+			var thatId = id;
+			return this.each(function(index, element){
+				var value = $(data).filter('[id="' + thatId + '"]');
+			
+				if( (value!==null) && (value.length!=0) ){
 					var name = $(value).attr('name');
 					var id = $(value).attr('id');
 
@@ -76,7 +92,7 @@
 					
 					//Walk Components
 					$(cListElem).MTConnectMonitor('components', value);
-				});			
+				}
 			});
 		},
 		
@@ -86,6 +102,22 @@
 		dataitems:	function(data){
 			return this.each(function(index, element){
 				$.each($(data).children('DataItems').children(), function(index, value){
+					var id = $(value).attr('id');
+					$(element).MTConnectMonitor('dataitem', id, value);
+				});
+			});
+		},
+		
+		/* Appends a DataItem container based on the given id and data.
+		 * id: The id of the DataItem.
+		 * data: An XML fragment containing the DataItem /probe definition
+		 */
+		dataitem: function(id, data){
+			var thatId = id;
+			return this.each(function(index, element){
+				var value = $(data).filter('[id="' + thatId + '"]');
+				
+				if( (value!==null) && (value.length!=0) ){
 					var name = $(value).attr('name');
 					var id = $(value).attr('id');
 					var category = $(value).attr('category');
@@ -118,8 +150,8 @@
 							.attr('data-mtconnect-ui-units', units)
 							.text(units)
 							.appendTo($(di));
-					}
-				});
+					}	
+				}
 			});
 		},
 		
