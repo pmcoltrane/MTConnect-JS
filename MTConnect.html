@@ -9,9 +9,15 @@
 </head>
 <body>
 	<h1>MTConnect Test</h1>
-	
-	<input id="proxyInput" type="text" value="http://localhost/proxy.php?"/>
-	<input id="agentInput" type="text" size="30" value="http://agent.mtconnect.org"/>
+
+	<p>
+		<label for="proxyInput">Enter the MTConnect proxy URL</label><br/>
+		<input id="proxyInput" type="text" size="30" value="http://localhost/proxy.php?"/>
+	</p>
+	<p>
+		<label for="agentInput">Enter the MTConnect agent URL</label><br/>
+		<input id="agentInput" type="text" size="30" value="http://agent.mtconnect.org"/>
+	</p>
 	
 	<button onclick="fetch('probe')">Probe</button>
 	<button onclick="fetch('current')">Current</button>
