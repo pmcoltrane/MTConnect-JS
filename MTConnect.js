@@ -31,8 +31,8 @@
 		/*	Returns the result of a /current request.
 		 *	options:
 		 *		url:	The base URL of the MTConnect agent.
-		 *		at:		Reserved for future use.
-		 *		path:	Reserved for future use.
+		 *		at:		Optional. A sequence number. The most current values on or before this sequence number will be provided.
+		 *		path:	Optional. An XPath expression specifying the components and/or data items to include.
 		 *		interval:	Reserved for future use.
 		 *	returns: XML data returned by the agent, or null on failure.
 		 */		
@@ -42,28 +42,59 @@
 				at: null,
 				interval: null,
 				path: null
-				//TODO: support 'at', 'path', interval parameters
+				//TODO: support interval parameter
 			}, options);		
 			
 			var url = settings.url + '/current';
+			
+			var querystring = '';
+			if( settings.at!==null ){
+				querystring += 'at='+settings.at;
+			}
+			if( settings.path!==null ){
+				querystring += 'path='+settings.path;
+			}
+			if( querystring.length>0 ){
+				url += '?' + querystring;
+			}
+			
 			return $.MTConnect('fetch', url);
 		},
 		
 		/*	Returns the result of a /sample request.
 		 *	options:
 		 *		url:	The base URL of the MTConnect agent.
-		 *		from:	Reserved for future use.
-		 *		count:	Reserved for future use.
-		 *		path:	Reserved for future use.
+		 *		from:	Optional. The starting sequence number.
+		 *		count:	Optional. The maximum number of data items to return.
+		 *		path:	Optional. An XPath expression specifying the components and/or data items to include.
+		 *		interval:	Reserved for future use.
 		 *	returns: XML data returned by the agent, or null on failure.
 		 */				
 		sample: function(options){
 			var settings = $.extend({
-				url: 'http://agent.mtconnect.org'
-				//TODO: support 'from', 'count', 'path' parameters
+				url: 'http://agent.mtconnect.org',
+				from: null,
+				count: null,
+				path: null,
+				interval: null
+				//TODO: support 'interval' parameter
 			}, options);
 			
 			var url = settings.url + '/sample';
+			var querystring = '';
+			if( settings.from!==null ){
+				querystring += 'from='+settings.from;
+			}
+			if( settings.count!==null ){
+				querystring += 'count='+settings.count;
+			}
+			if( settings.path !==null ){
+				querystring += 'path='+settings.path;
+			}
+			if( querystring.length>0 ){
+				url += '?' + querystring;
+			}
+			
 			return $.MTConnect('fetch', url);
 		},
 		
@@ -101,7 +132,21 @@
 			});
 			
 			return ret;		
-		}
+		},
+		
+		/* Reads the next sequence number out of an MTConnectStreams document.
+		 * data:	An MTConnectStreams XML document.
+		 * returns:	The nextSequence number.
+		 */
+		 next: function(data){
+			try{
+				var header = $(data).find('Header').attr('nextSequence');
+				return $.isNumeric(header) ? header : null;
+			}
+			catch(e){
+				return null;
+			}
+		 }
 	};
 	
 	/*	Usage:
@@ -109,6 +154,7 @@
 	 * 		var current = $.MTConnect('current', {url:'http://agent.mtconnect.org'});
 	 *		var sample = $.MTConnect('sample', {url:'http://agent.mtconnect.org'});
 	 *		var asset = $.MTConnect('asset', {url:'http://agent.mtconnect.org'});
+	 *		var nextSequence = $.MTConnect('next', current);
 	 */
 	$.MTConnect = function(method){
 	

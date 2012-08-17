@@ -10,13 +10,15 @@
 <body>
 	<h1>MTConnect Test</h1>
 	
-	<input id="proxyInput" type="hidden" value="http://localhost/MT/proxy.php?"/>
+	<input id="proxyInput" type="text" value="http://localhost/proxy.php?"/>
 	<input id="agentInput" type="text" size="30" value="http://agent.mtconnect.org"/>
 	
 	<button onclick="fetch('probe')">Probe</button>
 	<button onclick="fetch('current')">Current</button>
 	<button onclick="fetch('sample')">Sample</button>
 	<button onclick="fetch('asset')">Asset</button>
+	
+	<button onclick="nextTest()">Next</button>
 	
 	<div id="test" style="overflow:scroll;padding:0.25em;height:25em;font-family:monospace;white-space:pre;"></div>
 	
@@ -29,6 +31,14 @@
 			$('#test').text(data);
 			
 			return data;
+		}
+		
+		function nextTest(){
+			var proxy = $('#proxyInput').val();
+			var agent = $('#agentInput').val();
+			var data = $.MTConnect('current', {url: proxy+agent});
+			var next = $.MTConnect('next', data);
+			alert('Next Sequence: ' + next);
 		}
 	</script>
 	
