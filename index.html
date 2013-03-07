@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script type="text/javascript" src="MTConnect.js"></script>
+		<script type="text/javascript" src="DataItem.js"></script>
+		<link rel="stylesheet" href="DataItem.css"/>
+		<script type="text/javascript">
+			$(document).ready(function(){
+
+				var mtc;
+				
+				var update = function(){	
+					var current = mtc.current();
+					MTConnect.dataItems(current).each(function(){
+						var $this = $(this);
+						var $elem = $('[data-itemid="' + $this.attr('dataItemId') + '"]');
+						$elem.DataItem('update', this);
+					});	
+					
+					var timestamp = $(MTConnect.header(current)).attr('creationTime');
+					$('#lastUpdate').text(timestamp);
+				};
+				
+				$('#monitorButton').click(function(){
+					mtc = new MTConnect({
+						proxy: $('#proxy').val(),
+						agent: $('#agent').val()
+					});
+					
+					var probe = mtc.probe();
+					
+					$('#dataItems').empty();
+					
+					MTConnect.dataItems(probe).each(function(){
+						var $this = $(this);
+						var name = $this.attr('name')||$this.attr('id');
+						
+						$('<li></li>')
+							.DataItem('init', this)
+							.appendTo('#dataItems')
+						;
+					
+					});	
+					
+					update();
+					
+					setInterval(update, 1000);
+				});
+
+			});
+
+		</script>
+		<title>MTConnect Monitor</title>
+	</head>
+	<body>
+		<p>Enter an MTConnect agent and proxy, then click "Monitor".</p>
+		<label for="agent">Agent:</label>
+		<input type="text" size="40" id="agent" value="http://agent.mtconnect.org"/><br/>
+		<label for="proxy">Proxy:</label>
+		<input type="text" size="40" id="proxy" value="http://localhost/proxy.php?url="/><br/>
+
+		<button id="monitorButton">Monitor</button>
+		Last update: <span id="lastUpdate" style="font-size:small;"></span>
+		<br/><br/>
+
+		<ul id="dataItems" style="list-style-type:none;margin:0;padding:0;"></ul>
+	</body>
+</html>

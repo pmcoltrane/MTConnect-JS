@@ -1,21 +1,23 @@
 <?php
 
 if($_SERVER['REQUEST_METHOD']=='GET'){
-	
-	$url = urldecode($_SERVER['QUERY_STRING']);
-	$contents = file_get_contents($url);
-	
-	if($contents===false){
-		header('HTTP/1.1 500 Internal Server Error');
+	header('Content-Type: application/xml');
+	header('Access-Control-Allow-Origin: *');
+
+	$url = $_GET['url'];
+	$handle = fopen($url, "r");
+
+	if($handle){
+		while(!feof($handle)){
+			$buffer = fgets($handle, 4096);
+			echo $buffer;
+		}
+		fclose($handle);
 	}
 	else{
-	
-		header('Access-Control-Allow-Origin:*');
-		echo $contents;
+		header('HTTP/1.1 500 Internal Server Error');
 	}
 }
 else{
 	header('HTTP/1.1 405 Method Not Allowed');
 }
-
-?>

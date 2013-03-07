@@ -7,33 +7,17 @@ It is currently a work-in-progress: only a few very basic examples have been cre
 
 ## Contents
 
-* MTConnect.js - a jQuery plugin for fetching data from an MTConnect agent.
-* MTConnect.html - a demo page for the above.
-* MTConnectMonitor.js - a jQuery plugin for displaying current status from an MTConnect agent.
-* MTConnectMonitor.html - a demo page for the above.
-* MTConnectHistory.html - history viewer, currently just a stub.
+* MTConnect.js - a class for fetching data from an MTConnect agent.
+* DataItem.js - a jQuery widget for displaying an MTConnect dataitem.
+* DataItem.css - styles for DataItem.js.
+* index.html - a demo page for the above.
 * proxy.php - a very simple proxy script in PHP.
 
 ## Usage
 
-AJAX applications in a browser are limited by the same-origin policy. 
-As a result, this application cannot request data from an MTConnect agent e.g. from another web server. 
-There are two options (that I know of) for working around this limitation; both require intervention at the server-side.
+Run from your webserver and open index.html. Enter the location of the MTConnect agent and the proxy. Click 'Monitor'.
 
-### Option 1 - Proxy
-
-Setup a proxy webserver. 
-Proxy the MTConnect data from that server, and serve these Javascript applications from the same server.
-
-### Option 2 - CORS
-
-Configure the MTConnect Agent for CORS (cross-origin resource sharing. 
-The MTConnect Agent will need to be set up to include an appropriate Access-Control-Allow-Origin HTTP header.
-This tells the web browser to allow cross-domain AJAX requests, and the application will work normally. 
-
-This method works only if you can control the headers sent by the MTConnect agent. 
-Additionally, it is not supported by older browsers, including IE7 and below. 
-IE8 and above support CORS, but not through the XmlHttpRequest object used by jQuery. 
+If your agent supports CORS, or is from the same origin, leave the proxy input blank.
 
 ## Further Information
 
