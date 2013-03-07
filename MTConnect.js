@@ -16,13 +16,15 @@ var MTConnect = function(options){
 		if(resource) url += '/' + resource;
 		
 		// If we have any parameters, add those to the querystring
+		var qs = []
 		if(params){
 			url += '?'
 			for(var i in params){
-				url += i + '=' + params[i];
+				qs.push(i + '=' + params[i]);
 			}
+			url += qs.join('&');
 		}
-		
+
 		return url;
 	};
 	
@@ -42,23 +44,25 @@ var MTConnect = function(options){
 		return fetchXmlDocumentFromUrl(url);
 	};
 	
-	this.current = function(){
+	this.current = function(options){
 		var params = {};
-		if(this.options.at) params.at = this.options.at;
-		if(this.options.path) params.path = this.options.path;
+		options = $.extend({}, this.options, options);
+		if(options.at) params.at = options.at;
+		if(options.path) params.path = options.path;
 		
-		var url = createUrl(this.options, 'current', params);
+		var url = createUrl(options, 'current', params);
 		
 		return fetchXmlDocumentFromUrl(url);
 	};
 	
-	this.sample = function(){
+	this.sample = function(options){
 		var params = {};
-		if(this.options.from) params.from = this.options.from;
-		if(this.options.path) params.path = this.options.path;
-		if(this.options.count) params.count = this.options.count;
+		options = $.extend({}, this.options, options);
+		if(options.from) params.from = options.from;
+		if(options.path) params.path = options.path;
+		if(options.count) params.count = options.count;
 		
-		var url = createUrl(this.options, 'sample', params);
+		var url = createUrl(options, 'sample', params);
 		
 		return fetchXmlDocumentFromUrl(url);
 	};
