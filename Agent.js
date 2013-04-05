@@ -38,7 +38,9 @@ Agent.prototype = {
 
 	options: {
 		proxy: null,
-		url: 'agent.mtconnect.org'
+		url: 'agent.mtconnect.org',
+		interval: 1000,
+		count: 5000
 	},
 	
 	documents: {
@@ -180,13 +182,8 @@ Agent.prototype = {
 		var me = this;
 		var $me = $(this);
 		
-		var interval = 1000;
-		var count = 5000;
-		
-		if(options){
-			if(options.interval) interval = options.interval;
-			if(options.count) count = options.count;
-		}
+		var interval = (options && options.interval) ? options.interval : this.options.interval;
+		var count = (options && options.count) ? options.count : 5000;
 		
 		this.probe(null, function(error, data){
 			if(error) return;

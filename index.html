@@ -7,31 +7,17 @@
 		<link rel="stylesheet" href="DataItem.css"/>
 		<script type="text/javascript">
 			$(document).ready(function(){
-
-				var mtc;
-				
-				var update = function(){	
-					var current = mtc.current();
-					MTConnect.dataItems(current).each(function(){
-						var $this = $(this);
-						var $elem = $('[data-itemid="' + $this.attr('dataItemId') + '"]');
-						$elem.DataItem('update', this);
-					});	
-					
-					var timestamp = $(MTConnect.header(current)).attr('creationTime');
-					$('#lastUpdate').text(timestamp);
-				};
 				
 				$('#monitorButton').click(function(){
 					var options = {
 						proxy: $('#proxy').val(),
-						url: $('#agent').val()
+						url: $('#agent').val(),
+						interval: $('#interval').val()
 					};
 				
 					var agent = new Agent(options);
 					var $agent = $(agent);
 					$agent.bind('devices', function(e, doc){
-						console.log('devices');
 						$('#dataItems').empty();
 						Agent.dataItems(doc).each(function(){
 							var $this = $(this);
@@ -41,7 +27,6 @@
 						});
 					})
 					.bind('streams', function(e, doc){
-						console.log('streams');
 						Agent.dataItems(doc).each(function(){
 							var $this = $(this);
 							var $elem = $('[data-itemid="' + $this.attr('dataItemId') + '"]');
@@ -75,6 +60,8 @@
 		<input type="text" size="40" id="agent" value="http://agent.mtconnect.org"/><br/>
 		<label for="proxy">Proxy:</label>
 		<input type="text" size="40" id="proxy" value="http://localhost/proxy.php?url="/><br/>
+		<label for="interval">Interval (ms):</label>
+		<input type="text" size="40" id="interval" value="2000"/><br/>
 
 		<button id="monitorButton">Monitor</button>
 		Last update: <span id="lastUpdate" style="font-size:small;"></span>
