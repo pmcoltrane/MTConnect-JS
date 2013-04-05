@@ -7,7 +7,7 @@ It is currently a work-in-progress: only a few very basic examples have been cre
 
 ## Contents
 
-* MTConnect.js - a class for fetching data from an MTConnect agent.
+* Agent.js - a class for fetching data from an MTConnect agent.
 * DataItem.js - a jQuery widget for displaying an MTConnect dataitem.
 * DataItem.css - styles for DataItem.js.
 * index.html - a demo page for the above.
@@ -15,9 +15,7 @@ It is currently a work-in-progress: only a few very basic examples have been cre
 
 ## Usage
 
-Run from your webserver and open index.html. Enter the location of the MTConnect agent and the proxy. Click 'Monitor'.
-
-If your agent supports CORS, or is from the same origin, leave the proxy input blank.
+Run from your webserver and open index.html. Enter the location of the MTConnect agent and the proxy. Click 'Monitor'. If your agent supports CORS, or is from the same origin, leave the proxy input blank.
 
 ## Further Information
 
