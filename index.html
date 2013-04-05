@@ -2,17 +2,21 @@
 <html>
 	<head>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 		<script type="text/javascript" src="Agent.js"></script>
 		<script type="text/javascript" src="DataItem.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"/>
 		<link rel="stylesheet" href="DataItem.css"/>
 		<script type="text/javascript">
 			$(document).ready(function(){
+				
+				$('#interval').spinner({min:1, max:60, step:1});
 				
 				$('#monitorButton').click(function(){
 					var options = {
 						proxy: $('#proxy').val(),
 						url: $('#agent').val(),
-						interval: $('#interval').val()
+						interval: $('#interval').val() * 1000
 					};
 				
 					var agent = new Agent(options);
@@ -37,6 +41,13 @@
 					})
 					.bind('errors', function(e, doc){
 						console.log(doc);
+						$('<div></div>')
+							.text( $(doc).find('Error').text() )
+							.dialog({
+								appendTo: 'body',
+								modal: true
+							})
+						;
 					});
 					agent.monitor();
 					
@@ -60,8 +71,8 @@
 		<input type="text" size="40" id="agent" value="http://agent.mtconnect.org"/><br/>
 		<label for="proxy">Proxy:</label>
 		<input type="text" size="40" id="proxy" value="http://localhost/proxy.php?url="/><br/>
-		<label for="interval">Interval (ms):</label>
-		<input type="text" size="40" id="interval" value="2000"/><br/>
+		<label for="interval">Interval (s):</label>
+		<input type="text" size="5" id="interval" value="2"/><br/>
 
 		<button id="monitorButton">Monitor</button>
 		Last update: <span id="lastUpdate" style="font-size:small;"></span>

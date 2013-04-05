@@ -40,7 +40,7 @@
 }
 
 .WARNING,.READY{
-	background: gold;
+	background: GoldenRod;
 }
 
 .FAULT,.STOPPED,.TRIGGERED{
