@@ -1,6 +1,7 @@
 [data-role="DataItem"]{
 	display: inline-block;
-	border: solid black 1px;
+	background: LightSlateGray;
+	color: white;
 	margin: 0 6px  6px 0;
 	padding: 3px;
 	min-width: 19%;
@@ -28,22 +29,20 @@
 [data-role="DataItem.Value"]{
 	display: block;
 	padding: 3px;
-	border: solid black 1px;
-	text-align:center;
 }
 
 .UNAVAILABLE{
-	background: #ccc;
+	background: gray;
 }
 
 .NORMAL,.AVAILABLE,.ACTIVE,.ARMED{
-	background: #6c6;
+	background: green;
 }
 
 .WARNING,.READY{
-	background: #cc6;
+	background: gold;
 }
 
 .FAULT,.STOPPED,.TRIGGERED{
-	background: #c66;
+	background: FireBrick;
 }

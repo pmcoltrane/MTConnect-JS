@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-		<script type="text/javascript" src="MTConnect.js"></script>
+		<script type="text/javascript" src="Agent.js"></script>
 		<script type="text/javascript" src="DataItem.js"></script>
 		<link rel="stylesheet" href="DataItem.css"/>
 		<script type="text/javascript">
@@ -23,34 +23,50 @@
 				};
 				
 				$('#monitorButton').click(function(){
-					mtc = new MTConnect({
+					var options = {
 						proxy: $('#proxy').val(),
-						agent: $('#agent').val()
-					});
-					
-					var probe = mtc.probe();
-					
-					$('#dataItems').empty();
-					
-					MTConnect.dataItems(probe).each(function(){
-						var $this = $(this);
-						var name = $this.attr('name')||$this.attr('id');
+						url: $('#agent').val()
+					};
+				
+					var agent = new Agent(options);
+					var $agent = $(agent);
+					$agent.bind('devices', function(e, doc){
+						console.log('devices');
+						$('#dataItems').empty();
+						Agent.dataItems(doc).each(function(){
+							var $this = $(this);
+							var name = $this.attr('name') || $this.attr('id');
+								
+							$('<li></li>').DataItem('init', this).appendTo('#dataItems');
+						});
+					})
+					.bind('streams', function(e, doc){
+						console.log('streams');
+						Agent.dataItems(doc).each(function(){
+							var $this = $(this);
+							var $elem = $('[data-itemid="' + $this.attr('dataItemId') + '"]');
+							$elem.DataItem('update', this);
+						});
 						
-						$('<li></li>')
-							.DataItem('init', this)
-							.appendTo('#dataItems')
-						;
+						$('#lastUpdate').text(Agent.creationTime(doc));
+					})
+					.bind('errors', function(e, doc){
+						console.log(doc);
+					});
+					agent.monitor();
 					
-					});	
 					
-					update();
-					
-					setInterval(update, 1000);
 				});
 
 			});
 
 		</script>
+		<style>
+			body{
+				font-family: Segoe, Arial, Helvetica, sans-serif;
+				font-size: 12px;
+			}
+		</style>
 		<title>MTConnect Monitor</title>
 	</head>
 	<body>

@@ -49,20 +49,16 @@
 				var $elem = $this.find('[data-role="DataItem.Value"]');
 				switch(data.probe.attr('category')){
 					case 'CONDITION':
-						$elem
-							.text($item.text()||$item.prop('tagName'))
-							.removeClass('UNAVAILABLE,NORMAL,WARNING,FAULT')
-							.addClass($item.prop('tagName'))
+						$elem.text($item.text()||$item.prop('tagName'));
+						$this.removeClass('UNAVAILABLE NORMAL WARNING FAULT')
+							.addClass($item.prop('tagName').toUpperCase())
 						;
 						break;
 					case 'EVENT':
 					case 'SAMPLE':
 					default:
-						$elem
-							.text($item.text())
-							.removeClass()
-							.addClass($item.text())
-						;
+						$elem.text($item.text());
+						$this.removeClass().addClass($item.text());
 						break;
 				}
 			});
