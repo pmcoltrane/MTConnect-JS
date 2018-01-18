@@ -1,0 +1,25 @@
+{
+  "name": "mtconnect-js",
+  "version": "1.0.0",
+  "description": "mtconnect tools for javascript",
+  "main": "dist/bundle.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pmcoltrane/MTConnect-JS.git"
+  },
+  "keywords": [
+    "mtconnect"
+  ],
+  "author": "pmcoltrane",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/pmcoltrane/MTConnect-JS/issues"
+  },
+  "homepage": "https://github.com/pmcoltrane/MTConnect-JS#readme"
+}
