@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html lang=en>
+    <meta charset="UTF-8"/>
+<base href="../"/>
+<script src="dist/bundle.js"></script>
+<script defer>
+    
+    function displayResponse(doc){
+        let txtResponse = document.getElementById('txtResponse')
+        let docType = document.getElementById('spanDocType')
+        let isError = document.getElementById('spanIsError')
+        let firstSeq = document.getElementById('spanFirstSeq')
+        let lastSeq = document.getElementById('spanLastSeq')
+        let nextSeq = document.getElementById('spanNextSeq')
+        txtResponse.value = doc.documentElement.outerHTML
+
+        let response = MTConnect.ProcessResponse(doc)
+        docType.innerText = response.documentType
+        isError.innerText = response.isError
+
+        if(response.documentType === 'MTConnectStreams'){
+            firstSeq.innerText = response.header.firstSequence
+            lastSeq.innerText = response.header.lastSequence
+            nextSeq.innerText = response.header.nextSequence
+        }
+        else{
+            firstSeq.innerText = 'n/a'
+            lastSeq.innerText = 'n/a'
+            nextSeq.innerText = 'n/a'
+        }
+    }
+
+    function btnProbe_onclick(){
+        let txtAgent = document.getElementById('txtAgent')
+        let url = txtAgent.value
+        let probe = new MTConnect.ProbeRequest(url)
+        probe
+        .execute()
+        .then(displayResponse)
+        .catch(console.error)
+    }
+
+    function btnCurrent_onclick(){
+        let txtAgent = document.getElementById('txtAgent')
+        let url = txtAgent.value
+        let req = new MTConnect.CurrentRequest(url)
+        req
+        .execute()
+        .then(displayResponse)
+        .catch(console.error)
+    }
+
+    function btnSample_onclick(){
+        let txtAgent = document.getElementById('txtAgent')
+        let url = txtAgent.value
+        let req = new MTConnect.SampleRequest(url)
+        req
+        .execute()
+        .then(displayResponse)
+        .catch(console.error)
+    }
+
+    function btnAsset_onclick(){
+        let txtAgent = document.getElementById('txtAgent')
+        let url = txtAgent.value
+        let req = new MTConnect.AssetsRequest(url)
+        req
+        .execute()
+        .then(displayResponse)
+        .catch(console.error)
+    }
+</script>
+
+<label for=txtAgent>Agent URL:</label>
+<input id=txtAgent type=text value="https://cors-anywhere.herokuapp.com/http://agent.mtconnect.org"/>
+<br>
+<input id=btnProbe type=button value="Probe" onclick="btnProbe_onclick()" />
+<input id=btnCurrent type=button value="Current" onclick ="btnCurrent_onclick()" />
+<input id=btnSample type=button value="Sample" onclick ="btnSample_onclick()" />
+<input id=btnAsset type=button value="Asset" onclick = "btnAsset_onclick()" />
+<br>
+<textarea id=txtResponse readonly rows=25 cols=80></textarea>
+<br>
+<div>
+    Document type: <span id=spanDocType></span><br>
+    Error: <span id=spanIsError></span><br>
+    First sequence: <span id=spanFirstSeq></span><br>
+    Last sequence: <span id=spanLastSeq></span><br>
+    Next sequence: <span id=spanNextSeq></span><br>
+</div>
+
+</html>

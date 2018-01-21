@@ -157,6 +157,8 @@ class ProtocolHeader {
 class ProtocolResponse {
     constructor(xmlDoc) {
         this.xmlDocument = xmlDoc;
+        this.documentType = xmlDoc.documentElement.tagName;
+        this.isError = false;
     }
 
 }
@@ -178,7 +180,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requests_sample_request__ = __webpack_require__(7);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "SampleRequest", function() { return __WEBPACK_IMPORTED_MODULE_3__requests_sample_request__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__responses_create_protocol_response__ = __webpack_require__(8);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "CreateProtocolResponse", function() { return __WEBPACK_IMPORTED_MODULE_4__responses_create_protocol_response__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "ProcessResponse", function() { return __WEBPACK_IMPORTED_MODULE_4__responses_create_protocol_response__["a"]; });
 
 
 
@@ -459,6 +461,7 @@ class ErrorResponse extends __WEBPACK_IMPORTED_MODULE_1__protocol_response__["a"
 
         let headerElem = xmlDoc.getElementsByTagName('Header')[0];
         this.header = new __WEBPACK_IMPORTED_MODULE_0__headers_error_header__["a" /* default */](headerElem);
+        this.isError = true;
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ErrorResponse;

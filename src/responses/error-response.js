@@ -7,5 +7,6 @@ export default class ErrorResponse extends ProtocolResponse{
 
         let headerElem = xmlDoc.getElementsByTagName('Header')[0]
         this.header = new ErrorHeader(headerElem)
+        this.isError = true
     }
 }
