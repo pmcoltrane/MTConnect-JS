@@ -2,20 +2,22 @@
 
 ## Overview
 
-This is a collection of Javascript and jQuery plugins related to MTConnect client-side development.
-It is currently a work-in-progress: only a few very basic examples have been created.
+MTConnect-JS is a library for accessing data from an MTConnect agent via Javascript.
+It currently targets the browser.
 
-## Contents
+## Installation
 
-* Agent.js - a class for fetching data from an MTConnect agent.
-* DataItem.js - a jQuery widget for displaying an MTConnect dataitem.
-* DataItem.css - styles for DataItem.js.
-* index.html - a demo page for the above.
-* proxy.php - a very simple proxy script in PHP.
+> git clone https://github.com/pmcoltrane/MTConnect-JS.git
+
+## Build
+
+> npm run build
+
+NPM will run webpack, and create a `dist/bundle.js` that can be included in an HTML &lt;script&gt; tag.
 
 ## Usage
 
-Run from your webserver and open index.html. Enter the location of the MTConnect agent and the proxy. Click 'Monitor'. If your agent supports CORS, or is from the same origin, leave the proxy input blank.
+
 
 ## Further Information
 

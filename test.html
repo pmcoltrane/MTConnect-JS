@@ -12,7 +12,12 @@
 
     probe
     .execute()
-    .then(console.log)
+    .then(doc => {
+        console.log(doc)
+
+        let foo = MTConnect.CreateProtocolResponse(doc)
+        console.log(foo)
+    })
     .catch(console.error)
 
     let current = new MTConnect.CurrentRequest('https://cors-anywhere.herokuapp.com/http://agent.mtconnect.org')

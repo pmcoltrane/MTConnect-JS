@@ -61,498 +61,470 @@ var MTConnect =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+class ProtocolRequest {
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ProtocolRequest = function () {
-    function ProtocolRequest(baseUrl) {
-        _classCallCheck(this, ProtocolRequest);
-
+    constructor(baseUrl) {
         this.baseUrl = baseUrl;
     }
 
-    _createClass(ProtocolRequest, [{
-        key: 'buildUrl',
-        value: function buildUrl(components, query) {
-            var url = this.baseUrl;
-            if (!url.endsWith('/')) url += '/';
+    buildUrl(components, query) {
+        let url = this.baseUrl;
+        if (!url.endsWith('/')) url += '/';
 
-            // Join array of URL components into the path
-            var pathString = components.filter(function (i) {
-                return i;
-            }).map(encodeURIComponent).join('/');
+        // Join array of URL components into the path
+        let pathString = components.filter(i => i).map(encodeURIComponent).join('/');
 
-            // Create the querystring
-            var queryComponents = [];
-            if (query) for (var i in query) {
-                if (!i || !query[i]) continue;
+        // Create the querystring
+        let queryComponents = [];
+        if (query) for (let i in query) {
+            if (!i || !query[i]) continue;
 
-                var key = encodeURIComponent(i);
-                var value = encodeURIComponent(query[i]);
-                queryComponents.push(key + '=' + value);
-            }
-            var queryString = queryComponents.join("&");
-            if (queryString) queryString = '?' + queryString;
-
-            return url + pathString + queryString;
+            let key = encodeURIComponent(i);
+            let value = encodeURIComponent(query[i]);
+            queryComponents.push(key + '=' + value);
         }
-    }, {
-        key: 'send',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(url) {
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                console.log('Send', url);
+        let queryString = queryComponents.join("&");
+        if (queryString) queryString = '?' + queryString;
 
-                                return _context.abrupt('return', new Promise(function (resolve, reject) {
-                                    var xhr = new XMLHttpRequest();
-                                    xhr.open('GET', url);
-                                    xhr.onload = function (e) {
-                                        if (xhr.readyState === 4) {
-                                            if (xhr.status === 200) {
-                                                //console.log(xhr.responseText)
-                                                resolve(xhr.responseXML);
-                                            } else {
-                                                //console.error(xhr.statusText)
-                                                reject(xhr.statusText);
-                                            }
-                                        }
-                                    };
+        return url + pathString + queryString;
+    }
 
-                                    xhr.onerror = function (e) {
-                                        //console.error(xhr.statusText)
-                                        reject(xhr.statusText);
-                                    };
+    async send(url) {
+        console.log('Send', url);
 
-                                    xhr.send(null);
-                                }));
-
-                            case 2:
-                            case 'end':
-                                return _context.stop();
-                        }
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', url);
+            xhr.onload = e => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        //console.log(xhr.responseText)
+                        resolve(xhr.responseXML);
+                    } else {
+                        //console.error(xhr.statusText)
+                        reject(xhr.statusText);
                     }
-                }, _callee, this);
-            }));
+                }
+            };
 
-            function send(_x) {
-                return _ref.apply(this, arguments);
-            }
+            xhr.onerror = e => {
+                //console.error(xhr.statusText)
+                reject(xhr.statusText);
+            };
 
-            return send;
-        }()
-    }]);
+            xhr.send(null);
+        });
+    }
 
-    return ProtocolRequest;
-}();
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ProtocolRequest;
 
-exports.default = ProtocolRequest;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+class ProtocolHeader {
+    constructor(xmlElem) {
+        this.xmlElement = xmlElem;
+
+        if (!xmlElem || !xmlElem.getAttribute) throw new Error('Header element not valid.');
+
+        // Extract common attributes
+        this.creationTime = Date.parse(xmlElem.getAttribute('creationTime'));
+        this.sender = xmlElem.getAttribute('sender');
+        this.instanceId = Number(xmlElem.getAttribute('instanceId'));
+        this.version = xmlElem.getAttribute('version');
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ProtocolHeader;
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var _assetRequest = __webpack_require__(2);
+"use strict";
+class ProtocolResponse {
+    constructor(xmlDoc) {
+        this.xmlDocument = xmlDoc;
+    }
 
-Object.defineProperty(exports, 'AssetRequest', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_assetRequest).default;
-  }
-});
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ProtocolResponse;
 
-var _currentRequest = __webpack_require__(3);
 
-Object.defineProperty(exports, 'CurrentRequest', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_currentRequest).default;
-  }
-});
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var _probeRequest = __webpack_require__(4);
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__requests_assets_request__ = __webpack_require__(4);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "AssetsRequest", function() { return __WEBPACK_IMPORTED_MODULE_0__requests_assets_request__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__requests_current_request__ = __webpack_require__(5);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "CurrentRequest", function() { return __WEBPACK_IMPORTED_MODULE_1__requests_current_request__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__requests_probe_request__ = __webpack_require__(6);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "ProbeRequest", function() { return __WEBPACK_IMPORTED_MODULE_2__requests_probe_request__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requests_sample_request__ = __webpack_require__(7);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "SampleRequest", function() { return __WEBPACK_IMPORTED_MODULE_3__requests_sample_request__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__responses_create_protocol_response__ = __webpack_require__(8);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "CreateProtocolResponse", function() { return __WEBPACK_IMPORTED_MODULE_4__responses_create_protocol_response__["a"]; });
 
-Object.defineProperty(exports, 'ProbeRequest', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_probeRequest).default;
-  }
-});
 
-var _sampleRequest = __webpack_require__(5);
 
-Object.defineProperty(exports, 'SampleRequest', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_sampleRequest).default;
-  }
-});
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 
 console.log('MTConnect');
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _protocolRequest = __webpack_require__(0);
-
-var _protocolRequest2 = _interopRequireDefault(_protocolRequest);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var AssetRequest = function (_ProtocolRequest) {
-    _inherits(AssetRequest, _ProtocolRequest);
-
-    function AssetRequest(baseUrl, options) {
-        _classCallCheck(this, AssetRequest);
-
-        var _this = _possibleConstructorReturn(this, (AssetRequest.__proto__ || Object.getPrototypeOf(AssetRequest)).call(this, baseUrl));
-
-        _this._options = options;
-        return _this;
-    }
-
-    _createClass(AssetRequest, [{
-        key: 'execute',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                var url;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                url = this.buildUrl(['asset'], this._options);
-                                return _context.abrupt('return', this.send(url));
-
-                            case 2:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function execute() {
-                return _ref.apply(this, arguments);
-            }
-
-            return execute;
-        }()
-    }]);
-
-    return AssetRequest;
-}(_protocolRequest2.default);
-
-exports.default = AssetRequest;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _protocolRequest = __webpack_require__(0);
-
-var _protocolRequest2 = _interopRequireDefault(_protocolRequest);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var CurrentRequest = function (_ProtocolRequest) {
-    _inherits(CurrentRequest, _ProtocolRequest);
-
-    function CurrentRequest(baseUrl, options) {
-        _classCallCheck(this, CurrentRequest);
-
-        var _this = _possibleConstructorReturn(this, (CurrentRequest.__proto__ || Object.getPrototypeOf(CurrentRequest)).call(this, baseUrl));
-
-        _this._options = options || {};
-        return _this;
-    }
-
-    _createClass(CurrentRequest, [{
-        key: 'execute',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                var url;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                url = this.buildUrl(['current'], this._options);
-                                return _context.abrupt('return', this.send(url));
-
-                            case 2:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function execute() {
-                return _ref.apply(this, arguments);
-            }
-
-            return execute;
-        }()
-    }, {
-        key: 'at',
-        get: function get() {
-            return this._options.at;
-        },
-        set: function set(value) {
-            this._options.at = value;
-        }
-    }, {
-        key: 'path',
-        get: function get() {
-            return this._options.path;
-        },
-        set: function set(value) {
-            this._options.path = value;
-        }
-    }]);
-
-    return CurrentRequest;
-}(_protocolRequest2.default);
-
-exports.default = CurrentRequest;
-
-/***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__protocol_request__ = __webpack_require__(0);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+class AssetsRequest extends __WEBPACK_IMPORTED_MODULE_0__protocol_request__["a" /* default */] {
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _protocolRequest = __webpack_require__(0);
-
-var _protocolRequest2 = _interopRequireDefault(_protocolRequest);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ProbeRequest = function (_ProtocolRequest) {
-    _inherits(ProbeRequest, _ProtocolRequest);
-
-    function ProbeRequest(baseUrl, deviceName) {
-        _classCallCheck(this, ProbeRequest);
-
-        var _this = _possibleConstructorReturn(this, (ProbeRequest.__proto__ || Object.getPrototypeOf(ProbeRequest)).call(this, baseUrl));
-
-        _this._deviceName = deviceName;
-        return _this;
+    constructor(baseUrl, options) {
+        super(baseUrl);
+        this._options = options;
     }
 
-    _createClass(ProbeRequest, [{
-        key: 'execute',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                var url;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                url = this.buildUrl([this.deviceName]);
-                                return _context.abrupt('return', this.send(url));
+    async execute() {
+        let url = this.buildUrl(['asset'], this._options);
+        return this.send(url);
+    }
 
-                            case 2:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AssetsRequest;
 
-            function execute() {
-                return _ref.apply(this, arguments);
-            }
-
-            return execute;
-        }()
-    }, {
-        key: 'deviceName',
-        get: function get() {
-            return this._deviceName;
-        },
-        set: function set(value) {
-            this._deviceName = value;
-        }
-    }]);
-
-    return ProbeRequest;
-}(_protocolRequest2.default);
-
-exports.default = ProbeRequest;
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__protocol_request_js__ = __webpack_require__(0);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+class CurrentRequest extends __WEBPACK_IMPORTED_MODULE_0__protocol_request_js__["a" /* default */] {
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _protocolRequest = __webpack_require__(0);
-
-var _protocolRequest2 = _interopRequireDefault(_protocolRequest);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var SampleRequest = function (_ProtocolRequest) {
-    _inherits(SampleRequest, _ProtocolRequest);
-
-    function SampleRequest(baseUrl, options) {
-        _classCallCheck(this, SampleRequest);
-
-        var _this = _possibleConstructorReturn(this, (SampleRequest.__proto__ || Object.getPrototypeOf(SampleRequest)).call(this, baseUrl));
-
-        _this._options = options || {};
-        return _this;
+    constructor(baseUrl, options) {
+        super(baseUrl);
+        this._options = options || {};
     }
 
-    _createClass(SampleRequest, [{
-        key: 'execute',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                var url;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                url = this.buildUrl(['sample'], this._options);
-                                return _context.abrupt('return', this.send(url));
+    get at() {
+        return this._options.at;
+    }
+    set at(value) {
+        this._options.at = value;
+    }
 
-                            case 2:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
+    get path() {
+        return this._options.path;
+    }
+    set path(value) {
+        this._options.path = value;
+    }
 
-            function execute() {
-                return _ref.apply(this, arguments);
-            }
+    async execute() {
+        let url = this.buildUrl(['current'], this._options);
+        return this.send(url);
+    }
 
-            return execute;
-        }()
-    }, {
-        key: 'from',
-        get: function get() {
-            return this._options.from;
-        },
-        set: function set(value) {
-            this._options.from = value;
-        }
-    }, {
-        key: 'count',
-        get: function get() {
-            return this._options.count;
-        },
-        set: function set(value) {
-            this._options.count = value;
-        }
-    }, {
-        key: 'path',
-        get: function get() {
-            return this._options.path;
-        },
-        set: function set(value) {
-            this._options.path = value;
-        }
-    }]);
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = CurrentRequest;
 
-    return SampleRequest;
-}(_protocolRequest2.default);
 
-exports.default = SampleRequest;
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__protocol_request_js__ = __webpack_require__(0);
+
+
+class ProbeRequest extends __WEBPACK_IMPORTED_MODULE_0__protocol_request_js__["a" /* default */] {
+
+    constructor(baseUrl, deviceName) {
+        super(baseUrl);
+        this._deviceName = deviceName;
+    }
+
+    get deviceName() {
+        return this._deviceName;
+    }
+    set deviceName(value) {
+        this._deviceName = value;
+    }
+
+    async execute() {
+        let url = this.buildUrl([this.deviceName]);
+        return this.send(url);
+    }
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ProbeRequest;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__protocol_request_js__ = __webpack_require__(0);
+
+
+class SampleRequest extends __WEBPACK_IMPORTED_MODULE_0__protocol_request_js__["a" /* default */] {
+
+    constructor(baseUrl, options) {
+        super(baseUrl);
+        this._options = options || {};
+    }
+
+    get from() {
+        return this._options.from;
+    }
+    set from(value) {
+        this._options.from = value;
+    }
+
+    get count() {
+        return this._options.count;
+    }
+    set count(value) {
+        this._options.count = value;
+    }
+
+    get path() {
+        return this._options.path;
+    }
+    set path(value) {
+        this._options.path = value;
+    }
+
+    async execute() {
+        let url = this.buildUrl(['sample'], this._options);
+        return this.send(url);
+    }
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = SampleRequest;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = CreateProtocolResponse;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__assets_response__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__devices_response__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__error_response__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__streams_response__ = __webpack_require__(15);
+
+
+
+
+
+function CreateProtocolResponse(xmlDoc) {
+    if (!xmlDoc || !xmlDoc.documentElement || !xmlDoc.documentElement.tagName) {
+        throw new Error('Document is not a valid document.');
+    }
+
+    let documentTag = xmlDoc.documentElement.tagName;
+
+    if (documentTag === 'MTConnectDevices') {
+        return new __WEBPACK_IMPORTED_MODULE_1__devices_response__["a" /* default */](xmlDoc);
+    } else if (documentTag === 'MTConnectStreams') {
+        return new __WEBPACK_IMPORTED_MODULE_3__streams_response__["a" /* default */](xmlDoc);
+    } else if (documentTag === 'MTConnectAssets') {
+        return new __WEBPACK_IMPORTED_MODULE_0__assets_response__["a" /* default */](xmlDoc);
+    } else if (documentTag === 'MTConnectError') {
+        return new __WEBPACK_IMPORTED_MODULE_2__error_response__["a" /* default */](xmlDoc);
+    } else {
+        throw new Error('Document is not a recognized MTConnect document.');
+    }
+}
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__headers_assets_header__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__protocol_response__ = __webpack_require__(2);
+
+
+
+class AssetsResponse extends __WEBPACK_IMPORTED_MODULE_1__protocol_response__["a" /* default */] {
+    constructor(xmlDoc) {
+        super(xmlDoc);
+
+        let headerElem = xmlDoc.getElementsByTagName('Header')[0];
+        this.header = new __WEBPACK_IMPORTED_MODULE_0__headers_assets_header__["a" /* default */](headerElem);
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AssetsResponse;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__protocol_header__ = __webpack_require__(1);
+
+
+class AssetsHeader extends __WEBPACK_IMPORTED_MODULE_0__protocol_header__["a" /* default */] {
+    constructor(xmlElem) {
+        super(xmlElem);
+
+        // Extract Assets attributes
+        this.assetBufferSize = Number(xmlElem.getAttribute('assetBufferSize'));
+        this.assetCount = Number(xmlElem.getAttribute('assetCount'));
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AssetsHeader;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__headers_devices_header__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__protocol_response__ = __webpack_require__(2);
+
+
+
+class DevicesResponse extends __WEBPACK_IMPORTED_MODULE_1__protocol_response__["a" /* default */] {
+    constructor(xmlDoc) {
+        super(xmlDoc);
+
+        let headerElem = xmlDoc.getElementsByTagName('Header')[0];
+        this.header = new __WEBPACK_IMPORTED_MODULE_0__headers_devices_header__["a" /* default */](headerElem);
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = DevicesResponse;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__protocol_header__ = __webpack_require__(1);
+
+
+class DevicesHeader extends __WEBPACK_IMPORTED_MODULE_0__protocol_header__["a" /* default */] {
+    constructor(xmlElem) {
+        super(xmlElem);
+
+        // Extract Devices attributes
+        this.assetBufferSize = Number(xmlElem.getAttribute('assetBufferSize'));
+        this.assetCount = Number(xmlElem.getAttribute('assetCount'));
+        this.bufferSize = Number(xmlElem.getAttribute('bufferSize'));
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = DevicesHeader;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__headers_error_header__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__protocol_response__ = __webpack_require__(2);
+
+
+
+class ErrorResponse extends __WEBPACK_IMPORTED_MODULE_1__protocol_response__["a" /* default */] {
+    constructor(xmlDoc) {
+        super(xmlDoc);
+
+        let headerElem = xmlDoc.getElementsByTagName('Header')[0];
+        this.header = new __WEBPACK_IMPORTED_MODULE_0__headers_error_header__["a" /* default */](headerElem);
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ErrorResponse;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__protocol_header__ = __webpack_require__(1);
+
+
+class ErrorHeader extends __WEBPACK_IMPORTED_MODULE_0__protocol_header__["a" /* default */] {
+    constructor(xmlElem) {
+        super(xmlElem);
+
+        // Extract Error attributes
+        this.bufferSize = Number(xmlElem.getAttribute('bufferSize'));
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ErrorHeader;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__headers_streams_header__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__protocol_response__ = __webpack_require__(2);
+
+
+
+class StreamsResponse extends __WEBPACK_IMPORTED_MODULE_1__protocol_response__["a" /* default */] {
+    constructor(xmlDoc) {
+        super(xmlDoc);
+
+        let headerElem = xmlDoc.getElementsByTagName('Header')[0];
+        this.header = new __WEBPACK_IMPORTED_MODULE_0__headers_streams_header__["a" /* default */](headerElem);
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = StreamsResponse;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__protocol_header__ = __webpack_require__(1);
+
+
+class StreamsHeader extends __WEBPACK_IMPORTED_MODULE_0__protocol_header__["a" /* default */] {
+    constructor(xmlElem) {
+        super(xmlElem);
+
+        // Extract Streams attributes
+        this.bufferSize = Number(xmlElem.getAttribute('bufferSize'));
+        this.nextSequence = Number(xmlElem.getAttribute('nextSequence'));
+        this.firstSequence = Number(xmlElem.getAttribute('firstSequence'));
+        this.lastSequence = Number(xmlElem.getAttribute('lastSequence'));
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = StreamsHeader;
+
 
 /***/ })
 /******/ ]);

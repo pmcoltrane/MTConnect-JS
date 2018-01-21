@@ -1,6 +1,6 @@
 import ProtocolRequest from './protocol-request'
 
-export default class AssetRequest extends ProtocolRequest{
+export default class AssetsRequest extends ProtocolRequest{
 
     constructor(baseUrl, options){
         super(baseUrl)
