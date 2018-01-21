@@ -1,6 +1,6 @@
-export {default as AssetRequest} from './AssetRequest'
-export {default as CurrentRequest} from './CurrentRequest'
-export {default as ProbeRequest} from './ProbeRequest'
-export {default as SampleRequest} from './SampleRequest'
+export {default as AssetRequest} from './asset-request'
+export {default as CurrentRequest} from './current-request'
+export {default as ProbeRequest} from './probe-request'
+export {default as SampleRequest} from './sample-request'
 
 console.log('MTConnect')

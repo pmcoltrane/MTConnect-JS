@@ -1,4 +1,4 @@
-import ProtocolRequest from './ProtocolRequest.js'
+import ProtocolRequest from './protocol-request.js'
 
 export default class ProbeRequest extends ProtocolRequest {
 

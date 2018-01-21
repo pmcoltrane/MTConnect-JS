@@ -1,4 +1,4 @@
-import ProtocolRequest from './ProtocolRequest'
+import ProtocolRequest from './protocol-request'
 
 export default class AssetRequest extends ProtocolRequest{
 

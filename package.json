@@ -21,5 +21,11 @@
   "bugs": {
     "url": "https://github.com/pmcoltrane/MTConnect-JS/issues"
   },
-  "homepage": "https://github.com/pmcoltrane/MTConnect-JS#readme"
+  "homepage": "https://github.com/pmcoltrane/MTConnect-JS#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "webpack": "^3.10.0"
+  }
 }
