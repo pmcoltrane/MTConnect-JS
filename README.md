@@ -2,8 +2,10 @@
 
 ## Overview
 
-MTConnect-JS is a library for accessing data from an MTConnect agent via Javascript.
-It currently targets the browser.
+MTConnect-JS is a library for accessing data from an MTConnect agent via Javascript in the browser.
+If the library is not served from the same origin as the agent, the agent must allow CORS requests, or the browser will block requests.
+
+(The library is being rewritten in modern Javascript, and to remove the JQuery dependencies. Some functionality may have changed or be unavailable during this process.)
 
 ## Installation
 
@@ -17,7 +19,7 @@ NPM will run webpack, and create a `dist/bundle.js` that can be included in an H
 
 ## Usage
 
-
+For usage, see the examples under the `example` folder.
 
 ## Further Information
 
